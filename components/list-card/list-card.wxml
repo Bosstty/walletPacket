@@ -1,0 +1,7 @@
+<view class="list-card-shell list-card">
+  <view wx:if="{{title || actionText}}" class="list-card-head">
+    <text class="list-card-title">{{title}}</text>
+    <text wx:if="{{actionText}}" class="list-card-action" bindtap="handleActionTap">{{actionText}}</text>
+  </view>
+  <slot></slot>
+</view>

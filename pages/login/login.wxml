@@ -1,0 +1,60 @@
+<view class="page">
+  <view wx:if="{{checking}}" class="loading-mask">
+    <view class="loading-spinner"></view>
+  </view>
+
+  <view wx:else class="content">
+    <view class="hero">
+      <view class="hero-glow"></view>
+      <view class="hero-logo-frame">
+        <image class="hero-logo" src="/assets/logo/logo.png" mode="aspectFit"></image>
+      </view>
+    </view>
+
+    <view class="intro">
+      <text class="eyebrow">WALLET · 个人记账</text>
+      <text class="title">微信登录后开始记账</text>
+      <text class="subtitle">使用微信身份建立你的个人账本，首次注册可配合邀请码控制准入</text>
+    </view>
+
+    <view class="login-card">
+      <view class="login-points">
+        <view class="login-point">
+          <text class="login-point__dot"></text>
+          <text class="login-point__text">以当前小程序下的微信身份区分账号</text>
+        </view>
+        <view class="login-point">
+          <text class="login-point__dot"></text>
+          <text class="login-point__text">支持通过邀请码限制首次注册</text>
+        </view>
+      </view>
+
+      <input
+        class="invite-input"
+        type="text"
+        maxlength="50"
+        placeholder="首次注册如需邀请码，请在这里输入"
+        placeholder-class="invite-input__placeholder"
+        value="{{inviteCode}}"
+        bindinput="handleInviteCodeInput"
+      />
+
+      <view class="agreement-row" bindtap="handleAgreementChange">
+        <view class="agreement-check {{agreed ? 'agreement-check--active' : ''}}">
+          <text wx:if="{{agreed}}" class="agreement-check__icon">✓</text>
+        </view>
+        <text class="agreement-copy">我已阅读并同意《用户协议》与《隐私政策》</text>
+      </view>
+
+      <button
+        class="login-button"
+        hover-class="login-button--hover"
+        loading="{{submitting}}"
+        disabled="{{submitting}}"
+        bindtap="handleWechatLogin"
+      >{{submitting ? '登录中' : '微信登录'}}</button>
+
+      <text class="agreement-tip">老用户可直接登录；仅当服务端启用了邀请码时，新用户首次进入才会校验邀请码。</text>
+    </view>
+  </view>
+</view>

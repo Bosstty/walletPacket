@@ -1,15 +1,31 @@
-.profile-card,
-.settings-card {
+.profile-card {
   padding: 24rpx 28rpx;
 }
 
-.settings-card {
+.profile-card--compact {
+  background: linear-gradient(180deg, rgba(255, 248, 240, 0.92), rgba(255, 250, 242, 0.9));
+}
+
+.list-section {
   margin-top: 24rpx;
+}
+
+.account-section {
+  margin-top: 32rpx;
+  padding-bottom: 24rpx;
+}
+
+.profile-kicker {
+  display: block;
+  color: var(--color-primary);
+  font-size: 20rpx;
+  letter-spacing: 3rpx;
 }
 
 .profile-name {
   display: block;
-  font-size: 36rpx;
+  margin-top: 10rpx;
+  font-size: 34rpx;
   font-weight: 700;
 }
 
@@ -18,20 +34,73 @@
   margin-top: 8rpx;
 }
 
+.profile-meta {
+  display: block;
+  margin-top: 10rpx;
+  color: var(--color-text-secondary);
+  font-size: 24rpx;
+}
+
 .field-row,
 .row-topline,
-.budget-row {
+.budget-row,
+.info-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.field-label {
+.field-label,
+.info-label {
   font-size: 28rpx;
 }
 
-.action-button {
-  margin-top: 22rpx;
+.info-row {
+  margin-top: 18rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx solid var(--color-line);
+}
+
+.info-row--first {
+  margin-top: 10rpx;
+}
+
+.info-value {
+  color: var(--color-text-secondary);
+  font-size: 26rpx;
+}
+
+.status-text {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.custom-toggle {
+  position: relative;
+  width: 92rpx;
+  height: 54rpx;
+  padding: 6rpx;
+  box-sizing: border-box;
+  border-radius: 999rpx;
+  background: rgba(119, 105, 95, 0.22);
+  transition: background 200ms ease;
+}
+
+.custom-toggle.active {
+  background: var(--color-primary);
+}
+
+.custom-toggle__thumb {
+  width: 42rpx;
+  height: 42rpx;
+  border-radius: 21rpx;
+  background: #fffaf2;
+  box-shadow: 0 8rpx 16rpx rgba(47, 36, 31, 0.16);
+  transition: transform 200ms ease;
+}
+
+.custom-toggle.active .custom-toggle__thumb {
+  transform: translateX(38rpx);
 }
 
 .month-chip,
@@ -39,7 +108,7 @@
 .budget-input {
   border-radius: 20rpx;
   background: rgba(255, 255, 255, 0.72);
-  border: 1rpx solid var(--line);
+  border: 1rpx solid var(--color-line);
 }
 
 .month-chip,
@@ -49,6 +118,23 @@
 
 .budget-editor {
   margin-top: 26rpx;
+  padding: 24rpx;
+  border-radius: 24rpx;
+  background: var(--color-bg-card-muted);
+}
+
+.editor-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.editor-copy {
+  display: block;
+  margin-top: 8rpx;
+  color: var(--color-text-secondary);
+  font-size: 22rpx;
+  line-height: 1.6;
 }
 
 .budget-input {
@@ -61,6 +147,34 @@
 .budget-row {
   margin-top: 18rpx;
   padding-top: 18rpx;
-  border-top: 1rpx solid var(--line);
+  border-top: 1rpx solid var(--color-line);
   font-size: 26rpx;
+}
+
+.logout-button {
+  margin-top: 24rpx;
+  height: 80rpx;
+  padding: 0;
+  border-color: rgba(184, 92, 56, 0.18);
+  color: var(--color-primary);
+}
+
+.save-bar {
+  position: fixed;
+  left: 24rpx;
+  right: 24rpx;
+  bottom: calc(24rpx + env(safe-area-inset-bottom));
+  z-index: 20;
+  display: flex;
+  gap: 16rpx;
+  padding: 18rpx;
+  border-radius: 28rpx;
+  background: rgba(255, 250, 242, 0.96);
+  border: 1rpx solid var(--color-line);
+  box-shadow: var(--shadow-float);
+}
+
+.save-bar__button {
+  flex: 1;
+  margin: 0;
 }

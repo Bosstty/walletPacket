@@ -1,0 +1,6 @@
+<view class="entry-card-shell entry-card pressable {{accent}}" bindtap="handleTap">
+  <text wx:if="{{kicker}}" class="entry-kicker">{{kicker}}</text>
+  <text class="entry-title">{{title}}</text>
+  <text class="entry-description">{{description}}</text>
+  <view class="entry-arrow">↗</view>
+</view>

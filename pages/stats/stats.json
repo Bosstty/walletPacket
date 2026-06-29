@@ -1,5 +1,11 @@
 {
   "usingComponents": {
-    "navigation-bar": "/components/navigation-bar/navigation-bar"
+    "navigation-bar": "/components/navigation-bar/navigation-bar",
+    "data-card": "/components/data-card/data-card",
+    "list-card": "/components/list-card/list-card",
+    "empty-state": "/components/empty-state/empty-state",
+    "count-up": "/components/count-up/count-up",
+    "chart-donut": "/components/chart-donut/chart-donut",
+    "chart-line": "/components/chart-line/chart-line"
   }
 }

@@ -1,4 +1,4 @@
-const { bootstrapSession } = require('./utils/session')
+const { ensureSession } = require('./utils/session')
 const { getUser } = require('./utils/storage')
 
 App({
@@ -9,10 +9,10 @@ App({
       (systemInfo.statusBarHeight || 0) + 44
 
     try {
-      const user = await bootstrapSession()
+      const user = await ensureSession(this)
       this.globalData.user = user
     } catch (error) {
-      console.error('bootstrap session failed', error)
+      this.globalData.sessionReady = null
     }
   },
 
@@ -20,5 +20,12 @@ App({
     user: getUser(),
     systemInfo: null,
     navBarHeight: 88,
+    sessionReady: null,
+    refreshFlags: {
+      home: 0,
+      bills: 0,
+      stats: 0,
+      profile: 0,
+    },
   },
 })

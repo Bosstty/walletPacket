@@ -7,9 +7,12 @@ function request(options) {
     method = 'GET',
     data,
     withAuth = true,
+    timeout = 15000,
   } = options
 
   return new Promise((resolve, reject) => {
+    const requestUrl = `${getApiBaseUrl()}${url}`
+    const startedAt = Date.now()
     const header = {
       'content-type': 'application/json',
     }
@@ -22,10 +25,11 @@ function request(options) {
     }
 
     wx.request({
-      url: `${getApiBaseUrl()}${url}`,
+      url: requestUrl,
       method,
       data,
       header,
+      timeout,
       success(res) {
         const { statusCode, data: responseData } = res
 
@@ -45,8 +49,23 @@ function request(options) {
         })
       },
       fail(error) {
+        const duration = Date.now() - startedAt
+        const isTimeout = String(error?.errMsg || '').includes('timeout')
+        console.warn('request failed', {
+          method,
+          url: requestUrl,
+          duration,
+          timeout,
+          error,
+        })
         reject({
-          message: error?.errMsg || 'Network error',
+          message: isTimeout
+            ? `请求超时：${method} ${url}`
+            : error?.errMsg || 'Network error',
+          isTimeout,
+          url,
+          method,
+          duration,
         })
       },
     })

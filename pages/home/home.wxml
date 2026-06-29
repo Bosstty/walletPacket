@@ -1,4 +1,4 @@
-<navigation-bar title="账本首页" back="{{false}}" color="#1F2937" background="transparent"></navigation-bar>
+<navigation-bar title="" back="{{false}}" color="#2F241F" background="transparent"></navigation-bar>
 
 <view class="app-page">
   <view class="page-shell">
@@ -14,88 +14,164 @@
     </view>
 
     <block wx:else>
-      <view class="surface-card hero-card">
-        <view class="hero-header">
-          <view>
-            <text class="hero-kicker">今日视角</text>
-            <text class="hero-date">{{home.today}}</text>
+      <view class="ledger-intro">
+        <text class="ledger-title">{{greetingTitle}}</text>
+        <text class="ledger-copy">{{greetingCopy}}</text>
+      </view>
+
+      <view class="data-card overview-card">
+        <view class="segment-row">
+          <view class="segment-control">
+            <view class="segment-item pressable {{focusMode === 'day' ? 'active' : ''}}" data-mode="day" bindtap="handleFocusChange">今天</view>
+            <view class="segment-item pressable {{focusMode === 'month' ? 'active' : ''}}" data-mode="month" bindtap="handleFocusChange">本月</view>
           </view>
-          <button class="create-button" bindtap="handleCreateTap">记一笔</button>
+          <text class="overview-hint">聚焦核心数据</text>
         </view>
-        <view class="summary-grid">
-          <view class="summary-cell">
-            <text class="summary-label">今日支出</text>
-            <text class="summary-value expense">¥{{home.todaySummary.expenseText}}</text>
+
+        <view class="overview-body" wx:if="{{focusMode === 'day'}}">
+          <text class="overview-date">{{home.focusDay.dateText}}</text>
+          <text class="overview-label">{{home.focusDay.heroLabel}}</text>
+          <count-up
+            value="{{home.todaySummary.expenseText}}"
+            prefix="¥"
+            decimals="2"
+            tone="expense"
+            emphasized="{{true}}"
+            size="hero"
+          ></count-up>
+          <view class="overview-metrics">
+            <data-card label="收入" value="" tone="income">
+              <count-up
+                slot="value-extra"
+                value="{{home.todaySummary.incomeText}}"
+                prefix="¥"
+                decimals="2"
+                tone="income"
+              ></count-up>
+            </data-card>
+            <data-card label="结余" value="" tone="balance">
+              <count-up
+                slot="value-extra"
+                value="{{home.todaySummary.balanceText}}"
+                prefix="¥"
+                decimals="2"
+                tone="balance"
+              ></count-up>
+            </data-card>
           </view>
-          <view class="summary-cell">
-            <text class="summary-label">今日收入</text>
-            <text class="summary-value income">¥{{home.todaySummary.incomeText}}</text>
-          </view>
-          <view class="summary-cell">
-            <text class="summary-label">本月支出</text>
-            <text class="summary-value">¥{{home.monthSummary.expenseText}}</text>
-          </view>
-          <view class="summary-cell">
-            <text class="summary-label">本月结余</text>
-            <text class="summary-value">¥{{home.monthSummary.balanceText}}</text>
+        </view>
+
+        <view class="overview-body" wx:else>
+          <text class="overview-date">{{home.focusMonth.dateText}}</text>
+          <text class="overview-label">{{home.focusMonth.heroLabel}}</text>
+          <count-up
+            value="{{home.monthSummary.expenseText}}"
+            prefix="¥"
+            decimals="2"
+            tone="expense"
+            emphasized="{{true}}"
+            size="hero"
+          ></count-up>
+          <view class="overview-metrics">
+            <data-card label="收入" value="" tone="income">
+              <count-up
+                slot="value-extra"
+                value="{{home.monthSummary.incomeText}}"
+                prefix="¥"
+                decimals="2"
+                tone="income"
+              ></count-up>
+            </data-card>
+            <data-card label="结余" value="" tone="balance">
+              <count-up
+                slot="value-extra"
+                value="{{home.monthSummary.balanceText}}"
+                prefix="¥"
+                decimals="2"
+                tone="balance"
+              ></count-up>
+            </data-card>
           </view>
         </view>
       </view>
 
-      <view class="quick-actions">
-        <view class="surface-card action-card" bindtap="handleOpenBills">
-          <text class="action-title">账单整理</text>
-          <text class="action-copy">按天查看、编辑、删除你的每一笔记录</text>
-        </view>
-        <view class="surface-card action-card accent" bindtap="handleOpenStats">
-          <text class="action-title">月度统计</text>
-          <text class="action-copy">分类占比、趋势和预算执行一页看完</text>
-        </view>
-      </view>
-
-      <view class="surface-card budget-card" wx:if="{{home.overallBudget}}">
+      <view class="data-card budget-card" wx:if="{{home.overallBudget}}">
         <view class="card-topline">
           <text class="section-title">本月预算</text>
           <text class="budget-ratio">{{home.overallBudget.ratioText}}</text>
         </view>
         <view class="budget-row">
-          <text class="budget-label">已用 ¥{{home.overallBudget.usedText}}</text>
+          <text class="budget-label">预算 ¥{{home.overallBudget.amountText}}</text>
           <text class="budget-label">剩余 ¥{{home.overallBudget.remainingText}}</text>
         </view>
-        <view class="progress-track">
-          <view class="progress-fill" style="width: {{home.overallBudget.progressWidth}};"></view>
+        <view class="budget-track">
+          <view class="budget-fill" style="width: {{home.overallBudget.progressWidth}};"></view>
         </view>
       </view>
 
-      <view class="surface-card list-card">
-        <view class="card-topline">
-          <text class="section-title">最近账单</text>
-          <text class="list-link" bindtap="handleOpenBills">全部账单</text>
+      <view class="quick-actions">
+        <view class="action-wrap">
+          <entry-card
+            kicker="BILLS"
+            title="账单整理"
+            description="回看和整理每一笔记录。"
+            bindcardtap="handleOpenBills"
+          ></entry-card>
         </view>
-
-        <view wx:if="{{home.recentTransactions.length === 0}}" class="empty-state">
-          <text class="section-subtitle">还没有账单，先记第一笔。</text>
-        </view>
-
-        <view
-          wx:for="{{home.recentTransactions}}"
-          wx:key="id"
-          class="transaction-row"
-          data-id="{{item.id}}"
-          bindtap="handleOpenTransaction"
-        >
-          <view class="transaction-main">
-            <text class="transaction-name">{{item.categoryNameSnapshot}}</text>
-            <text class="transaction-note">{{item.note || item.occurredAtText}}</text>
-          </view>
-          <view class="transaction-side">
-            <text class="transaction-amount {{item.type === 'EXPENSE' ? 'expense' : 'income'}}">
-              {{item.type === 'EXPENSE' ? '-' : '+'}}¥{{item.amountText}}
-            </text>
-            <text class="transaction-time">{{item.occurredAtText}}</text>
-          </view>
+        <view class="action-wrap">
+          <entry-card
+            kicker="STATS"
+            title="月度统计"
+            description="查看趋势和预算执行。"
+            accent="soft"
+            bindcardtap="handleOpenStats"
+          ></entry-card>
         </view>
       </view>
+
+      <view class="list-section">
+        <list-card title="最近账单" actionText="全部账单" bindaction="handleOpenBills">
+          <empty-state
+            wx:if="{{home.recentTransactions.length === 0}}"
+            icon="¥"
+            title="还没有账单"
+            description="先从今天的第一笔开始，首页会自动展示你的收支变化。"
+            actionText="去记一笔"
+            bindaction="handleCreateTap"
+          ></empty-state>
+
+          <view wx:if="{{home.recentTransactions.length > 0}}" class="recent-list">
+            <view
+              wx:for="{{home.recentTransactions}}"
+              wx:key="id"
+              class="transaction-row"
+              data-id="{{item.id}}"
+              bindtap="handleOpenTransaction"
+            >
+              <view class="transaction-main">
+                <text class="transaction-name">{{item.categoryNameSnapshot}}</text>
+                <text class="transaction-note">{{item.note || item.occurredAtText}}</text>
+              </view>
+              <view class="transaction-side">
+                <text class="transaction-amount {{item.type === 'EXPENSE' ? 'expense' : 'income'}}">
+                  {{item.type === 'EXPENSE' ? '-' : '+'}}¥{{item.amountText}}
+                </text>
+                <text class="transaction-time">{{item.occurredAtText}}</text>
+              </view>
+            </view>
+          </view>
+        </list-card>
+      </view>
+
+      <view class="floating-fab pressable" bindtap="handleCreateTap">
+        <text class="floating-fab__text">记一笔</text>
+      </view>
+
+      <transaction-sheet
+        show="{{createSheetVisible}}"
+        bindclose="handleCloseCreateSheet"
+        bindsaved="handleCreateSaved"
+      ></transaction-sheet>
     </block>
   </view>
 </view>

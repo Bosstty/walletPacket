@@ -1,8 +1,8 @@
-<navigation-bar title="月度统计" back="{{false}}" color="#1F2937" background="transparent"></navigation-bar>
+<navigation-bar title="统计" back="{{false}}" color="#2F241F" background="transparent"></navigation-bar>
 
 <view class="app-page">
   <view class="page-shell">
-    <view class="surface-card header-card">
+    <view class="data-card header-card">
       <picker mode="date" fields="month" value="{{month}}" bindchange="handleMonthChange">
         <text class="month-chip">{{month}}</text>
       </picker>
@@ -10,89 +10,144 @@
     </view>
 
     <block wx:if="{{stats}}">
-      <view class="surface-card summary-card">
-        <view class="stats-grid">
-          <view class="stats-box">
-            <text class="stats-label">总支出</text>
-            <text class="stats-value">¥{{stats.summary.expenseText}}</text>
-          </view>
-          <view class="stats-box">
-            <text class="stats-label">总收入</text>
-            <text class="stats-value">¥{{stats.summary.incomeText}}</text>
-          </view>
-          <view class="stats-box">
-            <text class="stats-label">结余</text>
-            <text class="stats-value">¥{{stats.summary.balanceText}}</text>
-          </view>
-          <view class="stats-box">
-            <text class="stats-label">支出笔数</text>
-            <text class="stats-value">{{stats.expenseCount}}</text>
-          </view>
+      <view class="summary-stack">
+        <view class="summary-hero-row">
+          <data-card label="总支出" value="" tone="expense" emphasized="{{true}}">
+            <count-up
+              slot="value-extra"
+              value="{{stats.summary.expenseText}}"
+              prefix="¥"
+              tone="expense"
+              emphasized="{{true}}"
+              size="large"
+            ></count-up>
+          </data-card>
+          <data-card label="结余" value="" tone="balance" emphasized="{{true}}">
+            <count-up
+              slot="value-extra"
+              value="{{stats.summary.balanceText}}"
+              prefix="¥"
+              tone="balance"
+              emphasized="{{true}}"
+              size="large"
+            ></count-up>
+          </data-card>
+        </view>
+        <view class="summary-minor-row">
+          <data-card label="总收入" value="" tone="income">
+            <count-up
+              slot="value-extra"
+              value="{{stats.summary.incomeText}}"
+              prefix="¥"
+              tone="income"
+            ></count-up>
+          </data-card>
+          <data-card label="支出笔数" value="{{stats.expenseCount}}" meta="本月记录的支出次数"></data-card>
         </view>
       </view>
 
-      <view class="surface-card section-card" wx:if="{{stats.overallBudget}}">
-        <view class="card-topline">
-          <text class="section-title">总预算执行</text>
-          <text class="ratio-text">{{stats.overallBudget.ratioText}}</text>
-        </view>
-        <text class="section-subtitle">
-          预算 ¥{{stats.overallBudget.amountText}} / 已用 ¥{{stats.overallBudget.usedText}} / 剩余 ¥{{stats.overallBudget.remainingText}}
-        </text>
+      <view class="list-section">
+        <list-card title="支出分类占比">
+          <view class="chart-row">
+            <chart-donut
+              canvasId="expense-donut"
+              size="220"
+              segments="{{stats.expenseDonutSegments}}"
+              empty="{{stats.expenseByCategory.length === 0}}"
+            ></chart-donut>
+            <view class="legend-list">
+              <empty-state
+                wx:if="{{stats.expenseByCategory.length === 0}}"
+                icon="%"
+                title="还没有支出分类"
+                description="本月出现支出后，这里会自动形成分类占比。"
+              ></empty-state>
+              <view wx:for="{{stats.expenseByCategory}}" wx:key="categoryId" class="legend-row">
+                <view class="legend-main">
+                  <text class="legend-dot" style="background: {{item.color}};"></text>
+                  <text class="legend-name">{{item.categoryName}}</text>
+                </view>
+                <view class="legend-side">
+                  <text class="legend-amount">¥{{item.amountText}}</text>
+                  <text class="legend-meta">{{item.ratioText}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </list-card>
       </view>
 
-      <view class="surface-card section-card">
-        <view class="card-topline">
-          <text class="section-title">支出分类占比</text>
-          <text class="section-subtitle">{{stats.expenseByCategory.length}} 个分类</text>
-        </view>
-        <view wx:if="{{stats.expenseByCategory.length === 0}}" class="empty-state">
-          <text class="section-subtitle">本月还没有支出分类数据。</text>
-        </view>
-        <view wx:for="{{stats.expenseByCategory}}" wx:key="categoryId" class="metric-row">
-          <view class="metric-main">
-            <text class="metric-name">{{item.categoryName}}</text>
-            <text class="metric-meta">{{item.count}} 笔</text>
+      <view class="list-section">
+        <list-card title="日趋势">
+          <chart-line
+            canvasId="daily-trend"
+            width="620"
+            height="240"
+            points="{{stats.trendPoints}}"
+            empty="{{stats.dailyTrend.length === 0}}"
+          ></chart-line>
+          <empty-state
+            wx:if="{{stats.dailyTrend.length === 0}}"
+            icon="~"
+            title="暂无趋势数据"
+            description="当月开始有流水后，这里会显示每天的波动轮廓。"
+          ></empty-state>
+          <view wx:for="{{stats.dailyTrend}}" wx:key="date" class="metric-row">
+            <view class="metric-main">
+              <text class="metric-name">{{item.date}}</text>
+            </view>
+            <view class="metric-side">
+              <text class="metric-meta text-expense">-¥{{item.expenseText}}</text>
+              <text class="metric-meta text-income">+¥{{item.incomeText}}</text>
+            </view>
           </view>
-          <view class="metric-side">
-            <text class="metric-amount">¥{{item.amountText}}</text>
-            <text class="metric-meta">{{item.ratioText}}</text>
-          </view>
-        </view>
+        </list-card>
       </view>
 
-      <view class="surface-card section-card">
-        <view class="card-topline">
-          <text class="section-title">日趋势</text>
-        </view>
-        <view wx:for="{{stats.dailyTrend}}" wx:key="date" class="metric-row">
-          <view class="metric-main">
-            <text class="metric-name">{{item.date}}</text>
+      <view class="list-section">
+        <list-card title="总预算执行">
+          <view wx:if="{{stats.overallBudget}}" class="budget-panel">
+            <view class="metric-row metric-row--budget">
+              <view class="metric-main">
+                <text class="metric-name">预算 ¥{{stats.overallBudget.amountText}}</text>
+                <text class="metric-meta">已用 ¥{{stats.overallBudget.usedText}} / 剩余 ¥{{stats.overallBudget.remainingText}}</text>
+              </view>
+              <text class="metric-amount">{{stats.overallBudget.ratioText}}</text>
+            </view>
+            <view class="budget-track">
+              <view class="budget-fill" style="width: {{stats.overallBudget.progressWidth}};"></view>
+            </view>
           </view>
-          <view class="metric-side">
-            <text class="metric-meta">-¥{{item.expenseText}}</text>
-            <text class="metric-meta">+¥{{item.incomeText}}</text>
-          </view>
-        </view>
+          <empty-state
+            wx:else
+            icon="◎"
+            title="还没有总预算"
+            description="设置页填入当月总预算后，这里会展示执行进度。"
+          ></empty-state>
+        </list-card>
       </view>
 
-      <view class="surface-card section-card">
-        <view class="card-topline">
-          <text class="section-title">分类预算执行</text>
-        </view>
-        <view wx:if="{{stats.categoryBudgets.length === 0}}" class="empty-state">
-          <text class="section-subtitle">还没有设置分类预算。</text>
-        </view>
-        <view wx:for="{{stats.categoryBudgets}}" wx:key="id" class="metric-row">
-          <view class="metric-main">
-            <text class="metric-name">{{item.category.name}}</text>
-            <text class="metric-meta">预算 ¥{{item.amountText}}</text>
+      <view class="list-section">
+        <list-card title="分类预算执行">
+          <empty-state
+            wx:if="{{stats.categoryBudgets.length === 0}}"
+            icon="◔"
+            title="还没有分类预算"
+            description="先在设置页给主要支出分类设预算，这里再看执行情况。"
+          ></empty-state>
+          <view wx:for="{{stats.categoryBudgets}}" wx:key="id" class="budget-metric">
+            <view class="metric-row metric-row--budget">
+              <view class="metric-main">
+                <text class="metric-name">{{item.category.name}}</text>
+                <text class="metric-meta">预算 ¥{{item.amountText}} / 已用 ¥{{item.usedText}}</text>
+              </view>
+              <text class="metric-amount">{{item.ratioText}}</text>
+            </view>
+            <view class="budget-track">
+              <view class="budget-fill" style="width: {{item.progressWidth}};"></view>
+            </view>
           </view>
-          <view class="metric-side">
-            <text class="metric-amount">已用 ¥{{item.usedText}}</text>
-            <text class="metric-meta">{{item.ratioText}}</text>
-          </view>
-        </view>
+        </list-card>
       </view>
     </block>
   </view>

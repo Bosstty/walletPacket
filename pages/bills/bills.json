@@ -1,5 +1,9 @@
 {
   "usingComponents": {
-    "navigation-bar": "/components/navigation-bar/navigation-bar"
+    "navigation-bar": "/components/navigation-bar/navigation-bar",
+    "list-card": "/components/list-card/list-card",
+    "empty-state": "/components/empty-state/empty-state",
+    "count-up": "/components/count-up/count-up",
+    "transaction-sheet": "/components/transaction-sheet/transaction-sheet"
   }
 }

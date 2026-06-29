@@ -1,0 +1,9 @@
+<view class="chart-shell" style="width: {{size}}rpx; height: {{size}}rpx;">
+  <canvas
+    class="chart-canvas"
+    canvas-id="{{canvasId}}"
+    style="width: {{size}}rpx; height: {{size}}rpx;"
+    width="{{size}}"
+    height="{{size}}"
+  ></canvas>
+</view>

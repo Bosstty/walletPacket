@@ -1,0 +1,30 @@
+.count-up {
+  color: var(--color-text-primary);
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.count-up.emphasized {
+  letter-spacing: -1rpx;
+}
+
+.count-up.hero {
+  font-size: 72rpx;
+  line-height: 1;
+}
+
+.count-up.large {
+  font-size: 48rpx;
+}
+
+.count-up.income {
+  color: var(--color-income);
+}
+
+.count-up.expense {
+  color: var(--color-expense);
+}
+
+.count-up.balance {
+  color: var(--color-balance);
+}

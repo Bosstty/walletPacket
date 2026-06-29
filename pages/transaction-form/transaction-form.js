@@ -1,4 +1,4 @@
-const { bootstrapSession } = require('../../utils/session')
+const { ensureSession } = require('../../utils/session')
 const { fetchCategories } = require('../../services/categories')
 const {
   createTransaction,
@@ -11,6 +11,7 @@ const {
   toIsoStringFromLocal,
   toLocalDateAndTime,
 } = require('../../utils/format')
+const { THEME_COLORS } = require('../../utils/theme')
 
 Page({
   data: {
@@ -27,17 +28,22 @@ Page({
     expenseCategories: [],
     incomeCategories: [],
     activeCategories: [],
+    quickAmounts: [20, 50, 100, 200],
   },
 
   onLoad(options) {
     this.options = options || {}
-  },
-
-  onShow() {
     this.loadPage()
   },
 
+  onShow() {
+    if (!this.loadedOnce) {
+      return
+    }
+  },
+
   async loadPage() {
+    this.loadedOnce = true
     const id = this.options?.id || ''
     const dateAndTime = toLocalDateAndTime()
 
@@ -49,7 +55,7 @@ Page({
     })
 
     try {
-      await bootstrapSession()
+      await ensureSession(getApp())
       const [expenseCategories, incomeCategories] = await Promise.all([
         fetchCategories({ type: 'EXPENSE' }),
         fetchCategories({ type: 'INCOME' }),
@@ -92,6 +98,13 @@ Page({
         occurredTime: localDateTime.time,
       })
     } catch (error) {
+      if (error.code === 'AUTH_REQUIRED') {
+        wx.reLaunch({
+          url: '/pages/login/login',
+        })
+        return
+      }
+
       wx.showToast({
         title: error.message || '加载失败',
         icon: 'none',
@@ -119,6 +132,13 @@ Page({
     })
   },
 
+  handleQuickAmount(event) {
+    const { amount } = event.currentTarget.dataset
+    this.setData({
+      amountInput: String(amount),
+    })
+  },
+
   handleCategoryTap(event) {
     this.setData({
       selectedCategoryId: event.currentTarget.dataset.id,
@@ -131,9 +151,22 @@ Page({
     })
   },
 
+  handleQuickNote(event) {
+    const { note } = event.currentTarget.dataset
+    this.setData({
+      note,
+    })
+  },
+
   handleBudgetChange(event) {
     this.setData({
       budgetIncluded: event.detail.value,
+    })
+  },
+
+  handleBudgetToggleTap() {
+    this.setData({
+      budgetIncluded: !this.data.budgetIncluded,
     })
   },
 
@@ -193,6 +226,7 @@ Page({
         title: '已保存',
         icon: 'success',
       })
+      this.bumpRefreshFlags()
 
       setTimeout(() => {
         wx.navigateBack()
@@ -216,7 +250,7 @@ Page({
       wx.showModal({
         title: '删除账单',
         content: '删除后不会出现在账单和统计中。',
-        confirmColor: '#DC2626',
+        confirmColor: THEME_COLORS.primaryActive,
         success: resolve,
       })
     })
@@ -227,6 +261,7 @@ Page({
 
     try {
       await deleteTransaction(this.data.id)
+      this.bumpRefreshFlags()
       wx.showToast({
         title: '已删除',
         icon: 'success',
@@ -240,5 +275,13 @@ Page({
         icon: 'none',
       })
     }
+  },
+
+  bumpRefreshFlags() {
+    const app = getApp()
+    const next = Date.now()
+    app.globalData.refreshFlags.home = next
+    app.globalData.refreshFlags.bills = next
+    app.globalData.refreshFlags.stats = next
   },
 })

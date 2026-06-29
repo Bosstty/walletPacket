@@ -1,53 +1,86 @@
-<navigation-bar title="账单整理" back="{{false}}" color="#1F2937" background="transparent"></navigation-bar>
+<navigation-bar title="账单" back="{{false}}" color="#2F241F" background="transparent"></navigation-bar>
 
 <view class="app-page">
   <view class="page-shell">
-    <view class="surface-card filters-card">
+    <view class="data-card filters-card">
       <view class="filter-topline">
         <picker mode="date" fields="month" value="{{month}}" bindchange="handleMonthChange">
           <text class="month-chip">{{month}}</text>
         </picker>
-        <button class="pill-button mini-create" bindtap="handleCreateTap">新增</button>
       </view>
       <view class="filter-tabs">
-        <view class="filter-tab {{type === '' ? 'active' : ''}}" data-type="" bindtap="handleTypeChange">全部</view>
-        <view class="filter-tab {{type === 'EXPENSE' ? 'active' : ''}}" data-type="EXPENSE" bindtap="handleTypeChange">支出</view>
-        <view class="filter-tab {{type === 'INCOME' ? 'active' : ''}}" data-type="INCOME" bindtap="handleTypeChange">收入</view>
+        <view class="filter-tab pressable {{type === '' ? 'active' : ''}}" data-type="" bindtap="handleTypeChange">全部</view>
+        <view class="filter-tab pressable {{type === 'EXPENSE' ? 'active' : ''}}" data-type="EXPENSE" bindtap="handleTypeChange">支出</view>
+        <view class="filter-tab pressable {{type === 'INCOME' ? 'active' : ''}}" data-type="INCOME" bindtap="handleTypeChange">收入</view>
       </view>
       <view class="summary-strip" wx:if="{{summary}}">
-        <text>支出 ¥{{summary.expenseText}}</text>
-        <text>收入 ¥{{summary.incomeText}}</text>
+        <text class="text-expense">支出 ¥{{summary.expenseText}}</text>
+        <text class="text-income">收入 ¥{{summary.incomeText}}</text>
         <text>共 {{summary.total}} 笔</text>
       </view>
     </view>
 
-    <view class="surface-card list-card" wx:if="{{!loading}}">
-      <view wx:if="{{groups.length === 0}}" class="empty-state">
-        <text class="section-subtitle">这个月还没有符合筛选条件的账单。</text>
-      </view>
+    <view class="list-section" wx:if="{{!loading}}">
+      <list-card title="按天查看">
+        <empty-state
+          wx:if="{{groups.length === 0}}"
+          icon="□"
+          title="这个月还没有符合条件的账单"
+          description="先记下一笔，之后你就可以按天整理、筛选和回看。"
+          actionText="去记一笔"
+          bindaction="handleCreateTap"
+        ></empty-state>
 
-      <view wx:for="{{groups}}" wx:key="date" class="day-group">
-        <view class="day-header">
-          <text class="day-title">{{item.date}}</text>
-          <text class="day-summary">-¥{{item.expenseText}} / +¥{{item.incomeText}}</text>
-        </view>
-
-        <view
-          wx:for="{{item.items}}"
-          wx:key="id"
-          class="bill-row"
-          data-id="{{item.id}}"
-          bindtap="handleOpenTransaction"
-        >
-          <view class="bill-main">
-            <text class="bill-name">{{item.categoryNameSnapshot}}</text>
-            <text class="bill-note">{{item.noteText}}</text>
+        <view wx:for="{{groups}}" wx:for-item="group" wx:key="date" class="day-group">
+          <view class="day-header">
+            <text class="day-title">{{group.date}}</text>
+            <text class="day-summary">-¥{{group.expenseText}} / +¥{{group.incomeText}}</text>
           </view>
-          <text class="bill-amount {{item.type === 'EXPENSE' ? 'expense' : 'income'}}">
-            {{item.type === 'EXPENSE' ? '-' : '+'}}¥{{item.amountText}}
-          </text>
+
+          <view class="day-list">
+            <view
+              wx:for="{{group.items}}"
+              wx:for-item="transaction"
+              wx:for-index="transactionIndex"
+              wx:key="id"
+              class="swipe-shell {{transaction.swipeOffset < 0 ? 'is-revealing' : ''}} {{swipeHintVisible && swipeHintTransactionId === transaction.id ? 'is-hinting' : ''}}"
+              data-id="{{transaction.id}}"
+              bindtouchstart="handleRowTouchStart"
+              bindtouchmove="handleRowTouchMove"
+              bindtouchend="handleRowTouchEnd"
+            >
+              <view class="swipe-actions">
+                <view class="swipe-btn edit pressable" data-id="{{transaction.id}}" bindtap="handleEditTransaction">编辑</view>
+                <view class="swipe-btn delete pressable" data-id="{{transaction.id}}" bindtap="handleDeleteTransaction">删除</view>
+              </view>
+              <view
+                class="bill-row"
+                data-id="{{transaction.id}}"
+                bindtap="handleOpenTransaction"
+                style="transform: translateX({{transaction.swipeOffset}}rpx);"
+              >
+                <view class="bill-main">
+                  <text class="bill-name">{{transaction.categoryNameSnapshot}}</text>
+                  <text class="bill-note">{{transaction.noteText}}</text>
+                </view>
+                <text class="bill-amount {{transaction.type === 'EXPENSE' ? 'expense' : 'income'}}">
+                  {{transaction.type === 'EXPENSE' ? '-' : '+'}}¥{{transaction.amountText}}
+                </text>
+              </view>
+            </view>
+          </view>
         </view>
-      </view>
+      </list-card>
     </view>
+
+    <view class="floating-fab pressable" bindtap="handleCreateTap">
+      <text class="floating-fab__text">新增</text>
+    </view>
+
+    <transaction-sheet
+      show="{{createSheetVisible}}"
+      bindclose="handleCloseCreateSheet"
+      bindsaved="handleCreateSaved"
+    ></transaction-sheet>
   </view>
 </view>

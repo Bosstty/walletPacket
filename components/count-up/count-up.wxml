@@ -1,0 +1,1 @@
+<text class="count-up {{tone}} {{size}} {{emphasized ? 'emphasized' : ''}}">{{prefix}}{{displayValue}}{{suffix}}</text>

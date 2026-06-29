@@ -1,53 +1,106 @@
-<navigation-bar title="我的 / 设置" back="{{false}}" color="#1F2937" background="transparent"></navigation-bar>
+<navigation-bar title="设置" back="{{false}}" color="#2F241F" background="transparent"></navigation-bar>
 
 <view class="app-page">
   <view class="page-shell">
-    <view class="surface-card profile-card" wx:if="{{user}}">
-      <text class="profile-name">{{user.nickname || '账本用户'}}</text>
-      <text class="section-subtitle">OpenID: {{user.wechatOpenid}}</text>
-      <text class="section-subtitle">币种 {{user.currency}} · 周起始 {{user.weekStart}}</text>
-    </view>
-
-    <view class="surface-card settings-card">
-      <view class="field-row">
-        <text class="field-label">首页显示结余</text>
-        <switch color="#0F766E" checked="{{showBalance}}" bindchange="handleSwitchChange"></switch>
-      </view>
-      <button class="pill-button action-button" bindtap="handleSaveSettings">保存基础设置</button>
-    </view>
-
-    <view class="surface-card settings-card">
-      <view class="row-topline">
-        <text class="section-title">预算月份</text>
-        <picker mode="date" fields="month" value="{{month}}" bindchange="handleMonthChange">
-          <text class="month-chip">{{month}}</text>
-        </picker>
-      </view>
-
-      <view class="budget-editor">
-        <text class="field-label">总预算（元）</text>
-        <input class="budget-input" type="digit" placeholder="例如 5000" value="{{overallBudgetInput}}" bindinput="handleOverallBudgetInput" />
-        <button class="pill-button action-button" bindtap="handleSaveOverallBudget">保存总预算</button>
-      </view>
-
-      <view class="budget-editor">
-        <text class="field-label">分类预算（元）</text>
-        <picker range="{{expenseCategories}}" range-key="name" value="{{selectedExpenseCategoryIndex}}" bindchange="handleCategoryChange">
-          <view class="picker-field">
-            <text>{{selectedExpenseCategoryName}}</text>
+    <view class="list-section">
+      <list-card title="即时生效设置">
+        <view class="field-row">
+          <text class="field-label">首页显示结余</text>
+          <view class="custom-toggle {{showBalance ? 'active' : ''}}" bindtap="handleShowBalanceToggleTap">
+            <view class="custom-toggle__thumb"></view>
           </view>
-        </picker>
-        <input class="budget-input" type="digit" placeholder="例如 1200" value="{{categoryBudgetInput}}" bindinput="handleCategoryBudgetInput" />
-        <button class="pill-button action-button" bindtap="handleSaveCategoryBudget">保存分类预算</button>
-      </view>
+        </view>
+        <view class="info-row">
+          <text class="info-label">币种</text>
+          <text class="info-value">{{user.currency}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">周起始</text>
+          <text class="info-value">{{user.weekStart}}</text>
+        </view>
+      </list-card>
     </view>
 
-    <view class="surface-card settings-card" wx:if="{{categoryBudgets.length}}">
-      <text class="section-title">已设置的分类预算</text>
-      <view wx:for="{{categoryBudgets}}" wx:key="id" class="budget-row">
-        <text>{{item.category.name}}</text>
-        <text>¥{{item.amountText}}</text>
+    <view class="list-section">
+      <list-card title="预算设置">
+        <view class="row-topline">
+          <text class="section-subtitle">当前月份</text>
+          <picker mode="date" fields="month" value="{{month}}" bindchange="handleMonthChange">
+            <text class="month-chip">{{month}}</text>
+          </picker>
+        </view>
+
+        <view class="budget-editor">
+          <text class="editor-title">总预算（元）</text>
+          <text class="editor-copy">用于控制本月整体支出，不会影响历史月份。</text>
+          <input class="budget-input" type="digit" placeholder="例如 5000" value="{{overallBudgetInput}}" bindinput="handleOverallBudgetInput" />
+        </view>
+
+        <view class="budget-editor">
+          <text class="editor-title">分类预算（元）</text>
+          <text class="editor-copy">给高频支出单独设限，统计页会同步显示执行进度。</text>
+          <picker range="{{expenseCategories}}" range-key="name" value="{{selectedExpenseCategoryIndex}}" bindchange="handleCategoryChange">
+            <view class="picker-field">
+              <text>{{selectedExpenseCategoryName}}</text>
+            </view>
+          </picker>
+          <input class="budget-input" type="digit" placeholder="例如 1200" value="{{categoryBudgetInput}}" bindinput="handleCategoryBudgetInput" />
+        </view>
+      </list-card>
+    </view>
+
+    <view class="list-section" wx:if="{{categoryBudgets.length}}">
+      <list-card title="已设置的分类预算">
+        <view wx:for="{{categoryBudgets}}" wx:key="id" class="budget-row">
+          <text>{{item.category.name}}</text>
+          <text>¥{{item.amountText}}</text>
+        </view>
+      </list-card>
+    </view>
+
+    <view class="list-section account-section" wx:if="{{user}}">
+      <view class="data-card profile-card profile-card--compact">
+        <text class="profile-kicker">ACCOUNT</text>
+        <text class="profile-name">{{user.nickname || '账本用户'}}</text>
+        <text class="profile-meta">当前已通过微信身份登录</text>
       </view>
+
+      <list-card title="账户与登录">
+        <view class="info-row info-row--first">
+          <text class="info-label">昵称</text>
+          <text class="info-value">{{user.nickname || '账本用户'}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">手机号</text>
+          <text class="info-value">{{userPhoneMasked}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">OpenID</text>
+          <text class="info-value">{{userOpenidMasked}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">状态</text>
+          <text class="info-value status-text">已登录</text>
+        </view>
+        <button class="ghost-button logout-button pressable" bindtap="handleLogout">退出登录</button>
+      </list-card>
+    </view>
+
+    <view wx:if="{{overallBudgetDirty || categoryBudgetDirty}}" class="save-bar">
+      <button
+        wx:if="{{overallBudgetDirty}}"
+        class="pill-button save-bar__button pressable"
+        bindtap="handleSaveOverallBudget"
+      >
+        保存总预算
+      </button>
+      <button
+        wx:if="{{categoryBudgetDirty}}"
+        class="ghost-button save-bar__button pressable"
+        bindtap="handleSaveCategoryBudget"
+      >
+        保存分类预算
+      </button>
     </view>
   </view>
 </view>

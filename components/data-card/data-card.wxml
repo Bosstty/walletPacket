@@ -1,0 +1,9 @@
+<view class="data-card-shell data-card">
+  <text wx:if="{{label}}" class="data-label">{{label}}</text>
+  <view class="data-value-row">
+    <text wx:if="{{value}}" class="data-value {{tone}} {{emphasized ? 'emphasized' : ''}}">{{value}}</text>
+    <slot name="value-extra"></slot>
+  </view>
+  <text wx:if="{{meta}}" class="data-meta">{{meta}}</text>
+  <slot></slot>
+</view>

@@ -1,0 +1,108 @@
+<view wx:if="{{rendered}}" class="sheet-root">
+  <view class="sheet-mask {{active ? 'active' : ''}}" bindtap="handleMaskTap" catchtouchmove="handleSheetTap"></view>
+
+  <view class="sheet-panel {{active ? 'active' : ''}}" catchtap="handleSheetTap">
+    <view class="sheet-handle"></view>
+    <view class="sheet-head">
+      <text class="sheet-title">记一笔</text>
+      <text class="sheet-close" bindtap="handleMaskTap">收起</text>
+    </view>
+
+    <view wx:if="{{loading}}" class="sheet-loading">
+      <text class="section-subtitle">正在准备分类和表单...</text>
+    </view>
+
+    <view wx:else class="sheet-body">
+      <view class="type-switch">
+        <view class="switch-track">
+          <view class="switch-indicator {{type === 'INCOME' ? 'income' : ''}}"></view>
+          <view class="switch-item {{type === 'EXPENSE' ? 'active' : ''}}" data-type="EXPENSE" bindtap="handleTypeChange">支出</view>
+          <view class="switch-item {{type === 'INCOME' ? 'active' : ''}}" data-type="INCOME" bindtap="handleTypeChange">收入</view>
+        </view>
+      </view>
+
+      <view class="amount-panel">
+        <text class="amount-prefix">¥</text>
+        <input
+          class="amount-input"
+          type="digit"
+          placeholder="0.00"
+          value="{{amountInput}}"
+          bindinput="handleAmountInput"
+        />
+      </view>
+
+      <view class="quick-amounts">
+        <view
+          wx:for="{{quickAmounts}}"
+          wx:key="*this"
+          class="quick-amount-chip"
+          data-amount="{{item}}"
+          bindtap="handleQuickAmount"
+        >
+          ¥{{item}}
+        </view>
+      </view>
+
+      <view class="section">
+        <view class="section-header">
+          <text class="section-title">分类</text>
+          <text class="section-tip">{{type === 'EXPENSE' ? '选择用途' : '选择来源'}}</text>
+        </view>
+        <view class="category-grid">
+          <view
+            wx:for="{{activeCategories}}"
+            wx:key="id"
+            class="category-chip {{selectedCategoryId === item.id ? 'selected' : ''}}"
+            data-id="{{item.id}}"
+            bindtap="handleCategoryTap"
+          >
+            <text class="category-name">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="field-list">
+        <view class="field-row">
+          <text class="field-label">日期</text>
+          <picker mode="date" value="{{occurredDate}}" bindchange="handleDateChange">
+            <text class="field-value">{{occurredDate}}</text>
+          </picker>
+        </view>
+        <view class="field-row">
+          <text class="field-label">时间</text>
+          <picker mode="time" value="{{occurredTime}}" bindchange="handleTimeChange">
+            <text class="field-value">{{occurredTime}}</text>
+          </picker>
+        </view>
+        <view class="field-row">
+          <text class="field-label">计入预算</text>
+          <view class="custom-toggle {{budgetIncluded ? 'active' : ''}}" bindtap="handleBudgetToggleTap">
+            <view class="custom-toggle__thumb"></view>
+          </view>
+        </view>
+      </view>
+
+      <view class="section section--note">
+        <view class="quick-notes">
+          <view class="quick-note-chip" data-note="早餐" bindtap="handleQuickNote"># 早餐</view>
+          <view class="quick-note-chip" data-note="午餐" bindtap="handleQuickNote"># 午餐</view>
+          <view class="quick-note-chip" data-note="交通" bindtap="handleQuickNote"># 交通</view>
+          <view class="quick-note-chip" data-note="工资" bindtap="handleQuickNote"># 工资</view>
+        </view>
+        <textarea
+          class="note-area"
+          maxlength="200"
+          placeholder="备注可选"
+          value="{{note}}"
+          bindinput="handleNoteInput"
+        ></textarea>
+      </view>
+    </view>
+
+    <view class="sheet-footer">
+      <button class="ghost-button footer-button" bindtap="handleMaskTap">取消</button>
+      <button class="pill-button footer-button" loading="{{saving}}" bindtap="handleSave">保存</button>
+    </view>
+  </view>
+</view>

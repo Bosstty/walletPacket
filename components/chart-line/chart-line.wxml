@@ -1,0 +1,5 @@
+<canvas
+  class="chart-canvas"
+  canvas-id="{{canvasId}}"
+  style="width: {{width}}rpx; height: {{height}}rpx;"
+></canvas>

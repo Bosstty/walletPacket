@@ -1,0 +1,250 @@
+/* ============ 设计 token ============ */
+page {
+  height: 100%;
+  background:
+    radial-gradient(circle at top center, rgba(184, 92, 56, 0.14), transparent 34%),
+    linear-gradient(180deg, rgba(255, 250, 242, 0.92) 0%, var(--color-bg-page) 58%);
+}
+
+/* ============ 页面容器 ============ */
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============ 启动校验 loading 态 ============ */
+.loading-mask {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loading-spinner {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  border: 4rpx solid rgba(193, 99, 63, 0.18);
+  border-top-color: var(--color-primary);
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ============ 视觉焦点区 ============ */
+.hero {
+  flex: 1;
+  min-height: 320rpx;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 420rpx;
+  height: 420rpx;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(193, 99, 63, 0.32), rgba(193, 99, 63, 0) 70%);
+  filter: blur(28rpx);
+}
+
+.hero-logo-frame {
+  position: relative;
+  width: 220rpx;
+  height: 220rpx;
+  border-radius: 44rpx;
+  overflow: hidden;
+  filter: drop-shadow(0 18rpx 34rpx rgba(193, 99, 63, 0.20));
+}
+
+.hero-logo {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ============ 文案区 ============ */
+.intro {
+  padding: 0 48rpx;
+  margin-bottom: 48rpx;
+}
+
+.eyebrow {
+  display: block;
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
+  color: var(--color-text-secondary);
+  margin-bottom: 16rpx;
+}
+
+.title {
+  display: block;
+  font-size: 44rpx;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+  margin-bottom: 16rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 26rpx;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* ============ 登录卡片 ============ */
+.login-card {
+  margin: 0 32rpx;
+  padding: 40rpx 32rpx 32rpx;
+  border-radius: 32rpx;
+  background: var(--color-bg-card);
+  box-shadow: 0 10rpx 30rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 40rpx;
+  margin-bottom: calc(40rpx + constant(safe-area-inset-bottom));
+  margin-bottom: calc(40rpx + env(safe-area-inset-bottom));
+}
+
+.login-card-desc {
+  display: block;
+  font-size: 26rpx;
+  color: var(--color-text-primary);
+  opacity: 0.75;
+  line-height: 1.6;
+  margin-bottom: 32rpx;
+}
+
+.login-points {
+  display: flex;
+  flex-direction: column;
+  gap: 18rpx;
+  margin-bottom: 30rpx;
+}
+
+.login-point {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.login-point__dot {
+  width: 12rpx;
+  height: 12rpx;
+  border-radius: 50%;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.login-point__text {
+  font-size: 25rpx;
+  color: var(--color-text-primary);
+  opacity: 0.8;
+  line-height: 1.5;
+}
+
+.invite-input {
+  height: 92rpx;
+  padding: 0 26rpx;
+  box-sizing: border-box;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1rpx solid var(--color-line);
+  color: var(--color-text-primary);
+  font-size: 26rpx;
+  margin-bottom: 8rpx;
+}
+
+.invite-input__placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.agreement-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16rpx;
+  padding: 18rpx 0 28rpx;
+}
+
+.agreement-check {
+  width: 34rpx;
+  height: 34rpx;
+  border-radius: 10rpx;
+  border: 2rpx solid rgba(193, 99, 63, 0.24);
+  background: rgba(193, 99, 63, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2rpx;
+}
+
+.agreement-check--active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.agreement-check__icon {
+  color: #ffffff;
+  font-size: 20rpx;
+  line-height: 1;
+}
+
+.agreement-copy {
+  flex: 1;
+  font-size: 24rpx;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+.login-button {
+  width: 100%;
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 48rpx;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-active));
+  color: #ffffff;
+  font-size: 30rpx;
+  font-weight: 600;
+  box-shadow: 0 12rpx 24rpx rgba(193, 99, 63, 0.32);
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.login-button::after {
+  border: none;
+}
+
+.login-button--hover {
+  transform: scale(0.97);
+  opacity: 0.92;
+}
+
+.agreement {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  margin-top: 24rpx;
+}
+
+.agreement-tip {
+  display: block;
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+  opacity: 0.78;
+  line-height: 1.6;
+  margin-top: 24rpx;
+}

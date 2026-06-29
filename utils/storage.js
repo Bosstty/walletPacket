@@ -21,6 +21,7 @@ function setUser(user) {
 function clearSession() {
   wx.removeStorageSync(TOKEN_KEY)
   wx.removeStorageSync(USER_KEY)
+  wx.removeStorageSync(OPENID_KEY)
 }
 
 function getOrCreateDevOpenid() {

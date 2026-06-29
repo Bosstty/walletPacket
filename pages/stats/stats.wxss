@@ -1,11 +1,9 @@
-.header-card,
-.summary-card,
-.section-card {
+.header-card {
   padding: 24rpx 28rpx;
 }
 
-.summary-card,
-.section-card {
+.summary-stack,
+.list-section {
   margin-top: 24rpx;
 }
 
@@ -13,7 +11,7 @@
   display: inline-block;
   padding: 14rpx 24rpx;
   border-radius: 999rpx;
-  background: var(--surface-strong);
+  background: var(--color-bg-card-soft);
   font-size: 28rpx;
   font-weight: 600;
 }
@@ -23,42 +21,88 @@
   margin-top: 18rpx;
 }
 
-.stats-grid {
+.summary-hero-row,
+.summary-minor-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18rpx;
 }
 
-.stats-box {
-  padding: 22rpx;
-  border-radius: 24rpx;
-  background: rgba(255, 255, 255, 0.72);
+.summary-minor-row {
+  margin-top: 18rpx;
 }
 
-.stats-label,
-.metric-meta,
-.ratio-text {
-  color: var(--ink-muted);
-  font-size: 22rpx;
-}
-
-.stats-value {
-  display: block;
-  margin-top: 10rpx;
-  font-size: 34rpx;
-  font-weight: 700;
-}
-
-.card-topline,
-.metric-row {
+.metric-row,
+.legend-row,
+.legend-main,
+.legend-side {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
+.chart-row {
+  display: flex;
+  gap: 24rpx;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.legend-list {
+  flex: 1;
+  min-height: 220rpx;
+  min-width: 0;
+}
+
+.legend-row {
+  gap: 16rpx;
+  padding: 16rpx 0;
+  border-top: 1rpx solid var(--color-line);
+}
+
+.legend-main {
+  flex: 1;
+  min-width: 0;
+  gap: 14rpx;
+  justify-content: flex-start;
+}
+
+.legend-side {
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6rpx;
+}
+
+.legend-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 7rpx;
+}
+
+.legend-name,
+.metric-name,
+.metric-amount,
+.legend-amount {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.legend-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.legend-meta,
+.metric-meta {
+  font-size: 22rpx;
+  color: var(--color-text-secondary);
+}
+
 .metric-row {
   padding: 22rpx 0;
-  border-top: 1rpx solid var(--line);
+  border-top: 1rpx solid var(--color-line);
 }
 
 .metric-main,
@@ -72,8 +116,16 @@
   align-items: flex-end;
 }
 
-.metric-name,
-.metric-amount {
-  font-size: 28rpx;
-  font-weight: 600;
+.metric-row--budget {
+  padding-bottom: 14rpx;
+}
+
+.budget-panel,
+.budget-metric + .budget-metric {
+  margin-top: 18rpx;
+}
+
+.budget-metric + .budget-metric {
+  padding-top: 18rpx;
+  border-top: 1rpx solid var(--color-line);
 }
