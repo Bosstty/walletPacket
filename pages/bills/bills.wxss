@@ -1,0 +1,102 @@
+.filters-card,
+.list-card {
+  padding: 24rpx 28rpx;
+}
+
+.filter-topline,
+.summary-strip,
+.day-header,
+.bill-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.month-chip {
+  padding: 14rpx 24rpx;
+  border-radius: 999rpx;
+  background: var(--surface-strong);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.mini-create {
+  margin: 0;
+  width: 144rpx;
+  height: 68rpx;
+  line-height: 68rpx;
+  font-size: 24rpx;
+}
+
+.filter-tabs {
+  margin-top: 22rpx;
+  display: flex;
+  gap: 16rpx;
+}
+
+.filter-tab {
+  padding: 14rpx 26rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--ink-muted);
+  font-size: 24rpx;
+}
+
+.filter-tab.active {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.summary-strip {
+  margin-top: 22rpx;
+  color: var(--ink-muted);
+  font-size: 22rpx;
+}
+
+.list-card {
+  margin-top: 24rpx;
+}
+
+.day-group + .day-group {
+  margin-top: 28rpx;
+}
+
+.day-header {
+  padding-bottom: 16rpx;
+}
+
+.day-title {
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.day-summary {
+  color: var(--ink-muted);
+  font-size: 22rpx;
+}
+
+.bill-row {
+  padding: 24rpx 0;
+  border-top: 1rpx solid var(--line);
+}
+
+.bill-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.bill-name {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.bill-note {
+  font-size: 22rpx;
+  color: var(--ink-muted);
+}
+
+.bill-amount {
+  font-size: 30rpx;
+  font-weight: 700;
+}

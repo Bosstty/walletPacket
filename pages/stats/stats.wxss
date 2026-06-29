@@ -1,0 +1,79 @@
+.header-card,
+.summary-card,
+.section-card {
+  padding: 24rpx 28rpx;
+}
+
+.summary-card,
+.section-card {
+  margin-top: 24rpx;
+}
+
+.month-chip {
+  display: inline-block;
+  padding: 14rpx 24rpx;
+  border-radius: 999rpx;
+  background: var(--surface-strong);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.header-card .section-subtitle {
+  display: block;
+  margin-top: 18rpx;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18rpx;
+}
+
+.stats-box {
+  padding: 22rpx;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.stats-label,
+.metric-meta,
+.ratio-text {
+  color: var(--ink-muted);
+  font-size: 22rpx;
+}
+
+.stats-value {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.card-topline,
+.metric-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.metric-row {
+  padding: 22rpx 0;
+  border-top: 1rpx solid var(--line);
+}
+
+.metric-main,
+.metric-side {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.metric-side {
+  align-items: flex-end;
+}
+
+.metric-name,
+.metric-amount {
+  font-size: 28rpx;
+  font-weight: 600;
+}

@@ -1,0 +1,99 @@
+<navigation-bar title="月度统计" back="{{false}}" color="#1F2937" background="transparent"></navigation-bar>
+
+<view class="app-page">
+  <view class="page-shell">
+    <view class="surface-card header-card">
+      <picker mode="date" fields="month" value="{{month}}" bindchange="handleMonthChange">
+        <text class="month-chip">{{month}}</text>
+      </picker>
+      <text class="section-subtitle">围绕分类、趋势和预算回看这个月。</text>
+    </view>
+
+    <block wx:if="{{stats}}">
+      <view class="surface-card summary-card">
+        <view class="stats-grid">
+          <view class="stats-box">
+            <text class="stats-label">总支出</text>
+            <text class="stats-value">¥{{stats.summary.expenseText}}</text>
+          </view>
+          <view class="stats-box">
+            <text class="stats-label">总收入</text>
+            <text class="stats-value">¥{{stats.summary.incomeText}}</text>
+          </view>
+          <view class="stats-box">
+            <text class="stats-label">结余</text>
+            <text class="stats-value">¥{{stats.summary.balanceText}}</text>
+          </view>
+          <view class="stats-box">
+            <text class="stats-label">支出笔数</text>
+            <text class="stats-value">{{stats.expenseCount}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="surface-card section-card" wx:if="{{stats.overallBudget}}">
+        <view class="card-topline">
+          <text class="section-title">总预算执行</text>
+          <text class="ratio-text">{{stats.overallBudget.ratioText}}</text>
+        </view>
+        <text class="section-subtitle">
+          预算 ¥{{stats.overallBudget.amountText}} / 已用 ¥{{stats.overallBudget.usedText}} / 剩余 ¥{{stats.overallBudget.remainingText}}
+        </text>
+      </view>
+
+      <view class="surface-card section-card">
+        <view class="card-topline">
+          <text class="section-title">支出分类占比</text>
+          <text class="section-subtitle">{{stats.expenseByCategory.length}} 个分类</text>
+        </view>
+        <view wx:if="{{stats.expenseByCategory.length === 0}}" class="empty-state">
+          <text class="section-subtitle">本月还没有支出分类数据。</text>
+        </view>
+        <view wx:for="{{stats.expenseByCategory}}" wx:key="categoryId" class="metric-row">
+          <view class="metric-main">
+            <text class="metric-name">{{item.categoryName}}</text>
+            <text class="metric-meta">{{item.count}} 笔</text>
+          </view>
+          <view class="metric-side">
+            <text class="metric-amount">¥{{item.amountText}}</text>
+            <text class="metric-meta">{{item.ratioText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="surface-card section-card">
+        <view class="card-topline">
+          <text class="section-title">日趋势</text>
+        </view>
+        <view wx:for="{{stats.dailyTrend}}" wx:key="date" class="metric-row">
+          <view class="metric-main">
+            <text class="metric-name">{{item.date}}</text>
+          </view>
+          <view class="metric-side">
+            <text class="metric-meta">-¥{{item.expenseText}}</text>
+            <text class="metric-meta">+¥{{item.incomeText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="surface-card section-card">
+        <view class="card-topline">
+          <text class="section-title">分类预算执行</text>
+        </view>
+        <view wx:if="{{stats.categoryBudgets.length === 0}}" class="empty-state">
+          <text class="section-subtitle">还没有设置分类预算。</text>
+        </view>
+        <view wx:for="{{stats.categoryBudgets}}" wx:key="id" class="metric-row">
+          <view class="metric-main">
+            <text class="metric-name">{{item.category.name}}</text>
+            <text class="metric-meta">预算 ¥{{item.amountText}}</text>
+          </view>
+          <view class="metric-side">
+            <text class="metric-amount">已用 ¥{{item.usedText}}</text>
+            <text class="metric-meta">{{item.ratioText}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

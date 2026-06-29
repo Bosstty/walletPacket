@@ -1,19 +1,24 @@
-// app.js
-App({
-  onLaunch() {
-    // 展示本地存储能力
-    const logs = wx.getStorageSync('logs') || []
-    logs.unshift(Date.now())
-    wx.setStorageSync('logs', logs)
+const { bootstrapSession } = require('./utils/session')
+const { getUser } = require('./utils/storage')
 
-    // 登录
-    wx.login({
-      success: res => {
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      }
-    })
+App({
+  async onLaunch() {
+    const systemInfo = wx.getSystemInfoSync()
+    this.globalData.systemInfo = systemInfo
+    this.globalData.navBarHeight =
+      (systemInfo.statusBarHeight || 0) + 44
+
+    try {
+      const user = await bootstrapSession()
+      this.globalData.user = user
+    } catch (error) {
+      console.error('bootstrap session failed', error)
+    }
   },
+
   globalData: {
-    userInfo: null
-  }
+    user: getUser(),
+    systemInfo: null,
+    navBarHeight: 88,
+  },
 })

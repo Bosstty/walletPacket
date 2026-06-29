@@ -1,0 +1,143 @@
+.form-card {
+  padding: 28rpx;
+}
+
+.type-switch {
+  display: flex;
+  justify-content: center;
+}
+
+.switch-track {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background: var(--surface-strong);
+  border-radius: 999rpx;
+  padding: 8rpx;
+}
+
+.switch-indicator {
+  position: absolute;
+  top: 8rpx;
+  left: 8rpx;
+  width: calc(50% - 8rpx);
+  height: calc(100% - 16rpx);
+  border-radius: 999rpx;
+  background: #fff3f2;
+  transition: transform 220ms ease;
+}
+
+.switch-indicator.income {
+  transform: translateX(100%);
+  background: #edfdf3;
+}
+
+.switch-item {
+  position: relative;
+  z-index: 1;
+  height: 76rpx;
+  line-height: 76rpx;
+  text-align: center;
+  color: var(--ink-muted);
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.switch-item.active {
+  color: var(--ink);
+}
+
+.amount-panel {
+  margin-top: 28rpx;
+  display: flex;
+  align-items: baseline;
+  gap: 12rpx;
+}
+
+.amount-prefix {
+  font-size: 44rpx;
+  font-weight: 700;
+}
+
+.amount-input {
+  flex: 1;
+  height: 100rpx;
+  font-size: 64rpx;
+  font-weight: 700;
+}
+
+.section {
+  margin-top: 32rpx;
+}
+
+.category-grid {
+  margin-top: 18rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18rpx;
+}
+
+.category-chip {
+  min-width: 132rpx;
+  padding: 20rpx 22rpx;
+  text-align: center;
+  border-radius: 24rpx;
+  border: 1rpx solid var(--line);
+  background: rgba(255, 255, 255, 0.7);
+  transition: transform 180ms ease;
+}
+
+.category-chip.selected {
+  background: var(--accent-soft);
+  border-color: rgba(15, 118, 110, 0.22);
+  transform: translateY(-4rpx);
+}
+
+.category-name {
+  font-size: 26rpx;
+}
+
+.field-list {
+  margin-top: 28rpx;
+  border-top: 1rpx solid var(--line);
+}
+
+.field-row {
+  height: 96rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid var(--line);
+}
+
+.field-label,
+.field-value {
+  font-size: 28rpx;
+}
+
+.field-value {
+  color: var(--ink-muted);
+}
+
+.note-area {
+  margin-top: 18rpx;
+  width: 100%;
+  min-height: 160rpx;
+  padding: 22rpx;
+  box-sizing: border-box;
+  border-radius: 24rpx;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.save-button,
+.delete-button {
+  margin-top: 28rpx;
+}
+
+.delete-button {
+  border: 1rpx solid rgba(220, 38, 38, 0.18);
+  background: rgba(220, 38, 38, 0.06);
+  color: var(--danger);
+  border-radius: 999rpx;
+}

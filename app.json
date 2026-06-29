@@ -1,11 +1,39 @@
 {
   "pages": [
-    "pages/index/index",
-    "pages/logs/logs"
+    "pages/home/home",
+    "pages/transaction-form/transaction-form",
+    "pages/bills/bills",
+    "pages/stats/stats",
+    "pages/profile/profile"
   ],
+  "tabBar": {
+    "color": "#6B7280",
+    "selectedColor": "#0F766E",
+    "backgroundColor": "#FFFDF7",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/home/home",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/bills/bills",
+        "text": "账单"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationStyle": "custom"
+    "navigationStyle": "custom",
+    "backgroundColor": "#F7F1E8"
   },
   "style": "v2",
   "renderer": "skyline",

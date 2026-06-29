@@ -1,0 +1,65 @@
+<navigation-bar title="{{id ? '编辑账单' : '记一笔'}}" color="#1F2937" background="transparent"></navigation-bar>
+
+<view class="app-page">
+  <view class="page-shell">
+    <view class="surface-card form-card" wx:if="{{!loading}}">
+      <view class="type-switch">
+        <view class="switch-track">
+          <view class="switch-indicator {{type === 'INCOME' ? 'income' : ''}}"></view>
+          <view class="switch-item {{type === 'EXPENSE' ? 'active' : ''}}" data-type="EXPENSE" bindtap="handleTypeChange">支出</view>
+          <view class="switch-item {{type === 'INCOME' ? 'active' : ''}}" data-type="INCOME" bindtap="handleTypeChange">收入</view>
+        </view>
+      </view>
+
+      <view class="amount-panel">
+        <text class="amount-prefix">¥</text>
+        <input class="amount-input" type="digit" placeholder="0.00" value="{{amountInput}}" bindinput="handleAmountInput" />
+      </view>
+
+      <view class="section">
+        <text class="section-title">分类</text>
+        <view class="category-grid">
+        <view
+          wx:for="{{activeCategories}}"
+          wx:key="id"
+          class="category-chip {{selectedCategoryId === item.id ? 'selected' : ''}}"
+          data-id="{{item.id}}"
+            bindtap="handleCategoryTap"
+          >
+            <text class="category-name">{{item.name}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="field-list">
+        <view class="field-row">
+          <text class="field-label">日期</text>
+          <picker mode="date" value="{{occurredDate}}" bindchange="handleDateChange">
+            <text class="field-value">{{occurredDate}}</text>
+          </picker>
+        </view>
+        <view class="field-row">
+          <text class="field-label">时间</text>
+          <picker mode="time" value="{{occurredTime}}" bindchange="handleTimeChange">
+            <text class="field-value">{{occurredTime}}</text>
+          </picker>
+        </view>
+        <view class="field-row">
+          <text class="field-label">计入预算</text>
+          <switch color="#0F766E" checked="{{budgetIncluded}}" bindchange="handleBudgetChange"></switch>
+        </view>
+      </view>
+
+      <view class="section">
+        <text class="section-title">备注</text>
+        <textarea class="note-area" maxlength="200" placeholder="补充这笔账单的细节" value="{{note}}" bindinput="handleNoteInput"></textarea>
+      </view>
+
+      <button class="pill-button save-button" loading="{{saving}}" bindtap="handleSave">
+        {{id ? '更新账单' : '保存账单'}}
+      </button>
+
+      <button wx:if="{{id}}" class="delete-button" bindtap="handleDelete">删除这笔账单</button>
+    </view>
+  </view>
+</view>

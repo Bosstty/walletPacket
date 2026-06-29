@@ -1,0 +1,53 @@
+<navigation-bar title="账单整理" back="{{false}}" color="#1F2937" background="transparent"></navigation-bar>
+
+<view class="app-page">
+  <view class="page-shell">
+    <view class="surface-card filters-card">
+      <view class="filter-topline">
+        <picker mode="date" fields="month" value="{{month}}" bindchange="handleMonthChange">
+          <text class="month-chip">{{month}}</text>
+        </picker>
+        <button class="pill-button mini-create" bindtap="handleCreateTap">新增</button>
+      </view>
+      <view class="filter-tabs">
+        <view class="filter-tab {{type === '' ? 'active' : ''}}" data-type="" bindtap="handleTypeChange">全部</view>
+        <view class="filter-tab {{type === 'EXPENSE' ? 'active' : ''}}" data-type="EXPENSE" bindtap="handleTypeChange">支出</view>
+        <view class="filter-tab {{type === 'INCOME' ? 'active' : ''}}" data-type="INCOME" bindtap="handleTypeChange">收入</view>
+      </view>
+      <view class="summary-strip" wx:if="{{summary}}">
+        <text>支出 ¥{{summary.expenseText}}</text>
+        <text>收入 ¥{{summary.incomeText}}</text>
+        <text>共 {{summary.total}} 笔</text>
+      </view>
+    </view>
+
+    <view class="surface-card list-card" wx:if="{{!loading}}">
+      <view wx:if="{{groups.length === 0}}" class="empty-state">
+        <text class="section-subtitle">这个月还没有符合筛选条件的账单。</text>
+      </view>
+
+      <view wx:for="{{groups}}" wx:key="date" class="day-group">
+        <view class="day-header">
+          <text class="day-title">{{item.date}}</text>
+          <text class="day-summary">-¥{{item.expenseText}} / +¥{{item.incomeText}}</text>
+        </view>
+
+        <view
+          wx:for="{{item.items}}"
+          wx:key="id"
+          class="bill-row"
+          data-id="{{item.id}}"
+          bindtap="handleOpenTransaction"
+        >
+          <view class="bill-main">
+            <text class="bill-name">{{item.categoryNameSnapshot}}</text>
+            <text class="bill-note">{{item.noteText}}</text>
+          </view>
+          <text class="bill-amount {{item.type === 'EXPENSE' ? 'expense' : 'income'}}">
+            {{item.type === 'EXPENSE' ? '-' : '+'}}¥{{item.amountText}}
+          </text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

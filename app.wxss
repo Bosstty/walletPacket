@@ -1,10 +1,61 @@
-/**app.wxss**/
-.container {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 200rpx 0;
+page {
+  --bg: #f7f1e8;
+  --surface: #fffdf7;
+  --surface-strong: #f2eadf;
+  --ink: #1f2937;
+  --ink-muted: #6b7280;
+  --line: rgba(31, 41, 55, 0.08);
+  --accent: #0f766e;
+  --accent-soft: #d9f0eb;
+  --danger: #dc2626;
+  --shadow: 0 24rpx 60rpx rgba(15, 23, 42, 0.08);
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top right, rgba(15, 118, 110, 0.10), transparent 30%),
+    radial-gradient(circle at left 20%, rgba(245, 158, 11, 0.10), transparent 25%),
+    var(--bg);
+  color: var(--ink);
+  font-family: "PingFang SC", "Hiragino Sans GB", sans-serif;
+}
+
+.app-page {
+  min-height: 100vh;
+  padding-bottom: 140rpx;
   box-sizing: border-box;
-} 
+}
+
+.page-shell {
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.surface-card {
+  background: linear-gradient(180deg, rgba(255, 253, 247, 0.96), rgba(250, 245, 236, 0.92));
+  border: 1rpx solid var(--line);
+  border-radius: 32rpx;
+  box-shadow: var(--shadow);
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.section-subtitle {
+  font-size: 24rpx;
+  color: var(--ink-muted);
+}
+
+.pill-button {
+  border-radius: 999rpx;
+  border: none;
+  background: var(--accent);
+  color: #ffffff;
+}
+
+.ghost-button {
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--ink);
+  border: 1rpx solid var(--line);
+}

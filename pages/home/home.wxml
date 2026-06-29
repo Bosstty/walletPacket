@@ -1,0 +1,101 @@
+<navigation-bar title="账本首页" back="{{false}}" color="#1F2937" background="transparent"></navigation-bar>
+
+<view class="app-page">
+  <view class="page-shell">
+    <view wx:if="{{loading}}" class="surface-card loading-card">
+      <text class="section-title">正在同步数据...</text>
+      <text class="section-subtitle">后端联调已接通，正在获取你的首页信息。</text>
+    </view>
+
+    <view wx:elif="{{errorMessage}}" class="surface-card loading-card">
+      <text class="section-title">加载失败</text>
+      <text class="section-subtitle">{{errorMessage}}</text>
+      <button class="pill-button retry-button" bindtap="loadPage">重新加载</button>
+    </view>
+
+    <block wx:else>
+      <view class="surface-card hero-card">
+        <view class="hero-header">
+          <view>
+            <text class="hero-kicker">今日视角</text>
+            <text class="hero-date">{{home.today}}</text>
+          </view>
+          <button class="create-button" bindtap="handleCreateTap">记一笔</button>
+        </view>
+        <view class="summary-grid">
+          <view class="summary-cell">
+            <text class="summary-label">今日支出</text>
+            <text class="summary-value expense">¥{{home.todaySummary.expenseText}}</text>
+          </view>
+          <view class="summary-cell">
+            <text class="summary-label">今日收入</text>
+            <text class="summary-value income">¥{{home.todaySummary.incomeText}}</text>
+          </view>
+          <view class="summary-cell">
+            <text class="summary-label">本月支出</text>
+            <text class="summary-value">¥{{home.monthSummary.expenseText}}</text>
+          </view>
+          <view class="summary-cell">
+            <text class="summary-label">本月结余</text>
+            <text class="summary-value">¥{{home.monthSummary.balanceText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="quick-actions">
+        <view class="surface-card action-card" bindtap="handleOpenBills">
+          <text class="action-title">账单整理</text>
+          <text class="action-copy">按天查看、编辑、删除你的每一笔记录</text>
+        </view>
+        <view class="surface-card action-card accent" bindtap="handleOpenStats">
+          <text class="action-title">月度统计</text>
+          <text class="action-copy">分类占比、趋势和预算执行一页看完</text>
+        </view>
+      </view>
+
+      <view class="surface-card budget-card" wx:if="{{home.overallBudget}}">
+        <view class="card-topline">
+          <text class="section-title">本月预算</text>
+          <text class="budget-ratio">{{home.overallBudget.ratioText}}</text>
+        </view>
+        <view class="budget-row">
+          <text class="budget-label">已用 ¥{{home.overallBudget.usedText}}</text>
+          <text class="budget-label">剩余 ¥{{home.overallBudget.remainingText}}</text>
+        </view>
+        <view class="progress-track">
+          <view class="progress-fill" style="width: {{home.overallBudget.progressWidth}};"></view>
+        </view>
+      </view>
+
+      <view class="surface-card list-card">
+        <view class="card-topline">
+          <text class="section-title">最近账单</text>
+          <text class="list-link" bindtap="handleOpenBills">全部账单</text>
+        </view>
+
+        <view wx:if="{{home.recentTransactions.length === 0}}" class="empty-state">
+          <text class="section-subtitle">还没有账单，先记第一笔。</text>
+        </view>
+
+        <view
+          wx:for="{{home.recentTransactions}}"
+          wx:key="id"
+          class="transaction-row"
+          data-id="{{item.id}}"
+          bindtap="handleOpenTransaction"
+        >
+          <view class="transaction-main">
+            <text class="transaction-name">{{item.categoryNameSnapshot}}</text>
+            <text class="transaction-note">{{item.note || item.occurredAtText}}</text>
+          </view>
+          <view class="transaction-side">
+            <text class="transaction-amount {{item.type === 'EXPENSE' ? 'expense' : 'income'}}">
+              {{item.type === 'EXPENSE' ? '-' : '+'}}¥{{item.amountText}}
+            </text>
+            <text class="transaction-time">{{item.occurredAtText}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
